@@ -1,0 +1,43 @@
+/* Importación de Fuentes de Google */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Pacifico&display=swap');
+
+/* Variables de Color (Basado en el documento Tienda Pastelería) */
+:root {
+  --color-fondo-principal: #FFF5E1; /* Crema Pastel [cite: 44] */
+  --color-acento-principal: #8B4513; /* Chocolate (botones, acentos) [cite: 46] */
+  --color-acento-secundario: #FFC0CB; /* Rosa Suave (elementos interactivos) [cite: 46] */
+  --color-texto-principal: #5D4037; /* Marrón Oscuro [cite: 54] */
+  --color-texto-secundario: #B0BEC5; /* Gris Claro [cite: 56] */
+  --font-principal: 'Lato', sans-serif; /* [cite: 49] */
+  --font-encabezado: 'Pacifico', cursive; /*  */
+}
+
+/* Estilos de Reinicio y Base */
+body {
+  margin: 0;
+  font-family: var(--font-principal);
+  background-color: var(--color-fondo-principal);
+  color: var(--color-texto-principal);
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-encabezado);
+  color: var(--color-acento-principal);
+}
+
+/* Estilo para Botones (Componente Button.jsx) */
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.btn-primary {
+  background-color: var(--color-acento-principal); /* Chocolate */
+  color: #FFF;
+}
+.btn-primary:hover {
+  background-color: #A0522D; /* Un tono más oscuro de Chocolate */
+}
