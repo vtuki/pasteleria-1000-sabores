@@ -1,9 +1,3 @@
-// Antes (daba error):
-// import Header from './components/Header';
-// import Footer from './components/Footer';
-// import Button from './components/Button';
-
-// Después (corregido):
 import React from 'react';
 import Header from './components/Header.js'; // <-- ¡Añade .js!
 import Footer from './components/Footer.js'; // <-- ¡Añade .js!
