@@ -1,6 +1,21 @@
 const { usersData, generateId } = require('../models/user.model');
 
 class UserRepository {
+    findById(id) {
+        return usersData.find(u => u.id === parseInt(id));
+    }
+
+    // Simula la actualización del perfil (RF-3)
+    updateUser(id, updates) {
+        const index = usersData.findIndex(u => u.id === parseInt(id));
+        if (index === -1) return null;
+        
+        // Evita que se actualice la contraseña directamente desde este endpoint
+        if (updates.password) delete updates.password; 
+        
+        usersData[index] = { ...usersData[index], ...updates };
+        return usersData[index];
+    }
     // Simula la conexión con la DB para registrar un nuevo usuario
     createUser(userData) {
         const newUser = {

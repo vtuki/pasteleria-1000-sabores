@@ -6,6 +6,24 @@ const bcrypt = {
 };
 
 class UserService {
+    getUserProfile(id) {
+        const user = UserRepository.findById(id);
+        if (!user) return null;
+
+        const { password, ...profile } = user;
+        return profile;
+    }
+
+    // Actualizar perfil (RF-3)
+    updateProfile(id, updates) {
+        const updatedUser = UserRepository.updateUser(id, updates);
+        if (updatedUser) {
+            const { password, ...profile } = updatedUser;
+            return profile;
+        }
+        return null;
+    }
+    
     // Simula la creación de usuario (RF-3) y aplicación de descuentos iniciales
     registerUser(email, password, age, isDuocStudent) {
         if (UserRepository.findByEmail(email)) {

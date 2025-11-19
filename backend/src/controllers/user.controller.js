@@ -36,7 +36,41 @@ class UserController {
         }
     }
 
-    // Pendiente: updateProfile (requiere middleware de autenticación)
+    // NUEVO: Obtener datos de perfil (requiere autenticación)
+    async getProfile(req, res) {
+        const user = UserService.getUserProfile(req.userId); // ID viene del middleware
+
+        if (!user) {
+            return res.status(404).json({ message: "Usuario no encontrado." });
+        }
+        
+        return res.status(200).json(user);
+    }
+
+    // NUEVO: Actualizar perfil (RF-3)
+    async updateProfile(req, res) {
+        const updates = req.body;
+        
+        // Limpiar campos sensibles que no deberían ser modificados por el usuario
+        delete updates.id;
+        delete updates.rol;
+        
+        try {
+            const updatedUser = UserService.updateProfile(req.userId, updates);
+            
+            if (!updatedUser) {
+                return res.status(404).json({ message: "Usuario no encontrado." });
+            }
+
+            return res.status(200).json({ 
+                message: "Perfil actualizado correctamente.",
+                user: updatedUser
+            });
+        } catch (error) {
+            return res.status(400).json({ message: error.message });
+        }
+    }
+
 }
 
 module.exports = new UserController();

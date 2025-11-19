@@ -1,17 +1,25 @@
+// frontend/src/index.js (Debe quedar así)
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client'; 
+import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { AuthProvider } from './context/AuthContext'; // 👈 IMPORTADO CORRECTAMENTE
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// 1. Obtener el contenedor principal del HTML (generalmente el div con id='root')
+const container = document.getElementById('root');
+
+// 2. Crear una raíz de React 18
+const root = createRoot(container); 
+
+// 3. Renderizar el componente App usando la nueva raíz
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      {/* 💥 AQUÍ DEBE ENVOLVER A APP */}
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
