@@ -161,7 +161,7 @@ const ProfilePage = () => {
                                     onChange={handleChange} 
                                     style={{ marginRight: '10px' }}
                                 />
-                                Soy estudiante de **DuocUC** (para promoción de torta gratis en cumpleaños).
+                                Soy estudiante de UdeC (para promoción de torta gratis en cumpleaños).
                             </label>
                         </div>
                         
