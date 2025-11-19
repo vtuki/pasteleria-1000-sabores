@@ -4,7 +4,8 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
-import { AuthProvider } from './context/AuthContext'; // 👈 IMPORTADO CORRECTAMENTE
+import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 
 // 1. Obtener el contenedor principal del HTML (generalmente el div con id='root')
 const container = document.getElementById('root');
@@ -16,9 +17,11 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      {/* 💥 AQUÍ DEBE ENVOLVER A APP */}
       <AuthProvider>
-        <App />
+        {}
+        <CartProvider> 
+          <App />
+        </CartProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
