@@ -1,3 +1,5 @@
+// frontend/src/components/Header.js
+
 import React from 'react';
 import Button from './Button.js';
 import { Link, useNavigate } from 'react-router-dom'; 
@@ -6,6 +8,8 @@ import { useAuth } from '../context/AuthContext'; // 👈 CRÍTICO: Importar el 
 const Header = () => {
   const navigate = useNavigate();
   const auth = useAuth(); // Obtener el estado de autenticación (usuario, token, isAuthenticated)
+
+  
 
   // Handlers para la navegación cuando el usuario NO está autenticado
   const handleLoginClick = () => {
@@ -42,16 +46,18 @@ const Header = () => {
         Pastelería 1000 Sabores
       </Link>
 
-      {/* Navegación Principal */}
-      <nav style={{ display: 'flex', gap: '20px' }}>
-        <Link to="/" style={{ textDecoration: 'none', color: 'var(--color-texto-principal)' }}>Inicio</Link>
+      {/* Navegación Principal (ACTUALIZADA) */}
+      <nav style={{ display: 'flex', gap: '25px', fontSize: '1.1rem' }}>
+        {/* 💥 El enlace "Inicio" ahora apunta a /home (que es el WelcomePage) */}
+        <Link to="/home" style={{ textDecoration: 'none', color: 'var(--color-texto-principal)' }}>Inicio</Link> 
         <Link to="/catalogo" style={{ textDecoration: 'none', color: 'var(--color-texto-principal)' }}>Catálogo</Link>
-        <Link to="/blog" style={{ textDecoration: 'none', color: 'var(--color-texto-principal)' }}>Blog</Link>
+        <Link to="/orders/tracking" style={{ textDecoration: 'none', color: 'var(--color-texto-principal)' }}>Seguimiento Pedido</Link>
       </nav>
 
-      {/* Acciones de Usuario: LÓGICA CONDICIONAL */}
+      {/* Acciones de Usuario: Botones de Auth/Perfil */}
       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-        {/* Ícono de Carrito (siempre visible) */}
+        
+        {/* Icono de Carrito (Visible siempre) */}
         <Link to="/carrito" style={{ textDecoration: 'none', color: 'var(--color-texto-principal)', fontSize: '1.2rem', paddingRight: '10px' }}>🛒</Link> 
         
         {auth.isAuthenticated ? (

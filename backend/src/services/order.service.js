@@ -1,8 +1,8 @@
 // backend/src/services/order.service.js
 
-const OrderRepository = require('./order.repository');
-const CartService = require('./cart.service'); // Necesario para obtener el carrito
-const UserService = require('./user.service'); // Necesario para obtener el descuento
+const OrderRepository = require('../repositories/order.repository'); 
+const CartService = require('./cart.service'); 
+const UserService = require('./user.service'); 
 const CartRepository = require('../repositories/cart.repository');
 const { OrderStatus } = require('../models/order.model');
 
@@ -19,20 +19,32 @@ class OrderService {
         // 2. Aplicar Descuentos de Usuario (Ejemplo: Descuento 50% por edad)
         let totalToPay = cartSummary.subtotal;
         let discountAmount = 0;
+        let appliedDiscountsList = []; // Para registrar qué descuentos se aplicaron
 
-        const edadDiscount = profile.descuentos.find(d => d.tipo === 'Edad' && d.valor === '50%');
-        
-        if (edadDiscount) {
+        // LÓGICA DE DESCUENTO CORREGIDA: Verifica la EDAD ACTUAL del perfil
+        // Esto asegura que el descuento del 50% se aplica si la edad es >= 50
+        if (profile && profile.age >= 50) {
             discountAmount = totalToPay * 0.5; // Aplica 50%
             totalToPay -= discountAmount;
+            
+            // Registra el descuento aplicado para guardarlo en la orden
+            appliedDiscountsList.push({ 
+                tipo: 'Edad', 
+                valor: '50%', 
+                descripcion: 'Mayor de 50 años' 
+            });
         }
+        
+        // **PENDIENTE:** Aquí se debería implementar la lógica para el código "FELICES50" 
+        // y tortas gratis Duoc.
 
         // 3. Crear el Objeto Pedido (RF-4: Programación de Entrega)
         const orderData = {
             userId: userId,
             items: cartSummary.items,
             subtotal: cartSummary.subtotal,
-            descuentosAplicados: discountAmount,
+            descuentosAplicados: discountAmount, // Monto del descuento
+            appliedDiscountsList: appliedDiscountsList, // Lista de descuentos
             total: totalToPay,
             delivery: deliveryDetails, // Guarda fecha y lugar
             status: OrderStatus.PENDIENTE // Pendiente de pago
