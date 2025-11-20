@@ -7,6 +7,7 @@ require('dotenv').config();
 const productRoutes = require('./routes/product.routes');
 const userRoutes = require('./routes/user.routes'); 
 const cartRoutes = require('./routes/cart.routes');
+const orderRoutes = require('./routes/order.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -24,6 +25,7 @@ app.use(express.json()); // Permite recibir cuerpos de solicitud en formato JSON
 app.use(API_VERSION, productRoutes);
 app.use(API_VERSION, userRoutes);
 app.use(API_VERSION, cartRoutes);
+app.use(API_VERSION, orderRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {

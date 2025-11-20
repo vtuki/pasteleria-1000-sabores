@@ -92,7 +92,11 @@ const CartPage = () => {
                         </div>
 
                         {/* Botón de Pago/Checkout */}
-                        <Button variant="primary" style={{ width: '100%', padding: '15px', marginTop: '30px' }}>
+                        <Button 
+                            variant="primary" 
+                            style={{ width: '100%', padding: '15px', marginTop: '30px' }}
+                            onClick={() => navigate('/checkout')} 
+                        >
                             Proceder al Pago
                         </Button>
                     </>
