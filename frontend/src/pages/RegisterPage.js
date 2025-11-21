@@ -115,7 +115,7 @@ const RegisterPage = () => {
                 min="10"
                 style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }} 
               />
-              <small style={{ color: 'var(--color-texto-secundario)' }}>Si eres mayor de 50 años, recibirás un descuento del 50%.</small>
+              <small style={{ color: 'var(--color-texto-secundario)' }}>.</small>
             </div>
 
             {/* Checkbox Duoc (Requerido para tortas gratis en cumpleaños) */}

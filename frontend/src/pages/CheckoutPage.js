@@ -128,7 +128,6 @@ const CheckoutPage = () => {
                         
                         <div style={{ marginTop: '20px', borderTop: '2px solid #ccc', paddingTop: '10px' }}>
                             <p>Subtotal: **${summary.subtotal.toLocaleString('es-CL')} CLP**</p>
-                            <p style={{ color: '#008000' }}>Descuento por Usuario (50% por edad): **${(summary.subtotal - summary.total).toLocaleString('es-CL')} CLP**</p>
                             <h3 style={{ margin: '15px 0 0', color: '#B22222' }}>TOTAL A PAGAR: **${summary.total.toLocaleString('es-CL')} CLP**</h3>
                         </div>
                     </div>

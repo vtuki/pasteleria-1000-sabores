@@ -8,7 +8,7 @@ class OrderController {
         const { date, address, customization } = req.body; 
 
         if (!date || !address) {
-            return res.status(400).json({ message: 'Se requiere fecha y dirección para la entrega (RF-4).' });
+            return res.status(400).json({ message: 'Se requiere fecha y dirección para la entrega.' });
         }
 
         try {

@@ -9,7 +9,7 @@ import { useAuth } from '../context/AuthContext.js';
 const API_BASE_URL = 'http://localhost:3001/api/v1';
 
 // Componente ProductCard
-const ProductCard = ({ name, price, description, id }) => {
+const ProductCard = ({ name, price, description, id, imageUrl}) => {
   const cart = useCart();
 
   const handleAddToCart = () => {
@@ -26,6 +26,11 @@ const ProductCard = ({ name, price, description, id }) => {
       backgroundColor: '#FFFFFF', 
       boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
     }}>
+      <img 
+        src={imageUrl} 
+        alt={`Imagen de ${name}`} 
+        style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '4px', marginBottom: '15px' }}
+      />
       <h3 style={{ margin: '0 0 10px 0', color: 'var(--color-acento-principal)' }}>{name}</h3>
       <p style={{ color: 'var(--color-texto-secundario)', fontSize: '0.9rem' }}>{description}</p>
       
@@ -105,7 +110,8 @@ function HomePage() {
             id={p.id} 
             name={p.nombre} 
             price={p.precio} 
-            description={p.descripcion} 
+            description={p.descripcion}
+            imageUrl={p.imageUrl} 
           />
         ))}
       </div>
