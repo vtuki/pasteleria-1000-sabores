@@ -98,7 +98,7 @@ const CheckoutPage = () => {
                                 <input type="datetime-local" name="date" value={deliveryDetails.date} onChange={handleChange} required style={{ width: '100%', padding: '10px', marginTop: '5px' }} />
                             </div>
 
-                            <h2>2. Personalización (RF-2)</h2>
+                            <h2>2. Personalización</h2>
                             <div style={{ marginBottom: '20px' }}>
                                 <label htmlFor="customization">Mensaje Especial para la Torta:</label>
                                 <textarea name="customization" value={deliveryDetails.customization} onChange={handleChange} rows="3" style={{ width: '100%', padding: '10px', marginTop: '5px' }} placeholder="Ej: 'Feliz cumpleaños, Ignacio' o notas especiales."></textarea>
