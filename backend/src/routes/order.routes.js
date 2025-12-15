@@ -5,7 +5,7 @@ const authMiddleware = require('../middleware/auth.middleware');
 const router = express.Router();
 
 // Checkout y Pedidos requieren autenticación
-router.post('/checkout', authMiddleware, OrderController.finalizeCheckout);
-router.get('/orders/:orderId/track', authMiddleware, OrderController.trackOrder); // RF-4
+router.post('/checkout', authMiddleware.verifyToken, OrderController.finalizeCheckout);
+router.get('/orders/:orderId/track', authMiddleware.verifyToken, OrderController.trackOrder); // RF-4
 
 module.exports = router;

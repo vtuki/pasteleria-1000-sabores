@@ -1,4 +1,4 @@
-// frontend/src/context/AuthContext.js
+// frontend/src/context/AuthContext.js (CORREGIDO)
 
 import React, { createContext, useState, useContext } from 'react';
 
@@ -6,8 +6,11 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     // 1. Cargar estado inicial desde el localStorage para persistencia
+    const initialUser = JSON.parse(localStorage.getItem('user'));
+    
+    // 💥 CORRECCIÓN: Si el usuario existe, nos aseguramos de que el campo isMaster esté presente.
     const [user, setUser] = useState(
-        JSON.parse(localStorage.getItem('user')) || null
+        initialUser ? { ...initialUser, isMaster: initialUser.isMaster || false } : null
     );
     const [token, setToken] = useState(
         localStorage.getItem('token') || null
@@ -15,9 +18,12 @@ export const AuthProvider = ({ children }) => {
 
     // 2. Funciones de login/logout
     const login = (userData, authToken) => {
-        setUser(userData);
+        // Aseguramos que el estado local y el localStorage contengan isMaster
+        const userWithRole = { ...userData, isMaster: userData.isMaster || false };
+        
+        setUser(userWithRole);
         setToken(authToken);
-        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('user', JSON.stringify(userWithRole)); // Guardamos el objeto completo
         localStorage.setItem('token', authToken);
     };
 
@@ -36,7 +42,16 @@ export const AuthProvider = ({ children }) => {
         };
     };
 
-    const value = { user, token, login, logout, getAuthHeaders, isAuthenticated: !!user };
+    // La exposición del valor isMaster ahora es más robusta
+    const value = { 
+        user, 
+        token, 
+        login, 
+        logout, 
+        getAuthHeaders, 
+        isAuthenticated: !!user, 
+        isMaster: user ? user.isMaster : false // Esto es correcto, pero depende del estado 'user'
+    };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

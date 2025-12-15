@@ -8,6 +8,7 @@ const productRoutes = require('./routes/product.routes');
 const userRoutes = require('./routes/user.routes'); 
 const cartRoutes = require('./routes/cart.routes');
 const orderRoutes = require('./routes/order.routes');
+const adminRoutes = require('./routes/admin.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -26,6 +27,7 @@ app.use(API_VERSION, productRoutes);
 app.use(API_VERSION, userRoutes);
 app.use(API_VERSION, cartRoutes);
 app.use(API_VERSION, orderRoutes);
+app.use(API_VERSION, adminRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {

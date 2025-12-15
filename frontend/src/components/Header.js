@@ -48,10 +48,25 @@ const Header = () => {
 
       {/* Navegación Principal (ACTUALIZADA) */}
       <nav style={{ display: 'flex', gap: '25px', fontSize: '1.1rem' }}>
-        {/* 💥 El enlace "Inicio" ahora apunta a /home (que es el WelcomePage) */}
         <Link to="/home" style={{ textDecoration: 'none', color: 'var(--color-texto-principal)' }}>Inicio</Link> 
         <Link to="/catalogo" style={{ textDecoration: 'none', color: 'var(--color-texto-principal)' }}>Catálogo</Link>
         <Link to="/orders/tracking" style={{ textDecoration: 'none', color: 'var(--color-texto-principal)' }}>Seguimiento Pedido</Link>
+        
+        {/* 💥 ENLACE CONDICIONAL PARA ADMINISTRADOR */}
+        {auth.isMaster && (
+             <Link 
+                to="/admin" 
+                style={{ 
+                    textDecoration: 'none', 
+                    color: 'var(--color-acento-principal)',
+                    fontWeight: 'bold',
+                    // Estilos visuales para diferenciarlo del resto
+                    borderBottom: '2px solid var(--color-acento-principal)' 
+                }}
+             >
+                Panel Admin
+            </Link>
+        )}
       </nav>
 
       {/* Acciones de Usuario: Botones de Auth/Perfil */}
@@ -63,6 +78,8 @@ const Header = () => {
         {auth.isAuthenticated ? (
           // 1. Mostrar si el usuario está logueado: Botones Perfil y Cerrar Sesión
           <>
+            {/* El enlace de Admin se movió a la Navegación Principal para mejor claridad */}
+
             <Button 
               onClick={() => navigate('/profile')} 
               variant="secondary" 

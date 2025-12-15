@@ -6,6 +6,7 @@ const bcrypt = {
 };
 
 class UserService {
+    // Obtener datos de perfil (Excluye el password)
     getUserProfile(id) {
         const user = UserRepository.findById(id);
         if (!user) return null;
@@ -14,7 +15,7 @@ class UserService {
         return profile;
     }
 
-    // Actualizar perfil (RF-3)
+    // Actualizar perfil (RF-3 y nuevos campos)
     updateProfile(id, updates) {
         const updatedUser = UserRepository.updateUser(id, updates);
         if (updatedUser) {
@@ -31,17 +32,29 @@ class UserService {
         }
 
         const hashedPassword = bcrypt.hash(password);
-        const userData = { email, password: hashedPassword, age: parseInt(age), isDuocStudent, rol: 'Usuario' };
+        
+        // 💥 Inicialización con los nuevos campos vacíos para un nuevo registro
+        const userData = { 
+            email, 
+            password: hashedPassword, 
+            age: parseInt(age), 
+            isDuocStudent, 
+            rol: 'Usuario',
+            isMaster: false, // Por defecto no es master
+            nombre: '',
+            apellido: '',
+            telefono: '',
+            direccion: '',
+            ciudad: '',
+            descuentos: [], // Se inicializa el array de descuentos
+        };
         
         const user = UserRepository.createUser(userData);
         
-        // Aplicación de lógica de descuentos (Según "Tienda PASTELERIA.docx"):
-        // Implementa el descuento del 50% para usuarios mayores de 50 años.
+        // Aplicación de lógica de descuentos:
         if (user.age >= 50) {
             user.descuentos.push({ tipo: 'Edad', valor: '50%', descripcion: 'Mayor de 50 años' }); 
         }
-        
-        // Pendiente: Implementar lógica para el descuento FELICES50 y tortas gratis Duoc.
         
         return user;
     }
@@ -54,20 +67,14 @@ class UserService {
             throw new Error("Credenciales inválidas.");
         }
         
-        // En un caso real, aquí se generaría un JWT (OIDC/OAuth2)
-        // Por ahora, solo devolvemos los datos del usuario.
+        // 💥 CORRECCIÓN: Devolver isMaster para el Front-End
         return { 
             id: user.id, 
             email: user.email, 
             rol: user.rol, 
-            descuentos: user.descuentos 
+            descuentos: user.descuentos,
+            isMaster: user.isMaster || false // ¡CLAVE para el acceso Admin!
         };
-    }
-
-    // Simula la modificación del perfil (RF-3)
-    updateProfile(id, updates) {
-        // En un caso real, filtraríamos qué campos se pueden actualizar (ej. no el password directamente)
-        return UserRepository.updateUser(id, updates);
     }
 }
 

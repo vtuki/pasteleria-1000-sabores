@@ -11,6 +11,7 @@ import ProfilePage from './pages/ProfilePage.js';
 import CartPage from './pages/CartPage.js';
 import CheckoutPage from './pages/CheckoutPage.js';
 import OrderTrackingPage from './pages/OrderTrackingPage.js';
+import AdminPage from './pages/AdminPage.js';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/orders/tracking" element={<OrderTrackingPage />} />
         <Route path="/profile" element={<ProfilePage />} /> 
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </div>
   );

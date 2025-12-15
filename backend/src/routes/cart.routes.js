@@ -5,8 +5,8 @@ const authMiddleware = require('../middleware/auth.middleware');
 const router = express.Router();
 
 // Todas las rutas del carrito requieren autenticación (porque es por sesión de usuario)
-router.get('/cart', authMiddleware, CartController.getCart);
-router.post('/cart/add', authMiddleware, CartController.addItem);
-router.delete('/cart/:itemId', authMiddleware, CartController.removeItem);
+router.get('/cart', authMiddleware.verifyToken, CartController.getCart);
+router.post('/cart/add', authMiddleware.verifyToken, CartController.addItem);
+router.delete('/cart/:itemId', authMiddleware.verifyToken, CartController.removeItem);
 
 module.exports = router;

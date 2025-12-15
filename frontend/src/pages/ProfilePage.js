@@ -1,4 +1,4 @@
-// frontend/src/pages/ProfilePage.js (Creación de la página)
+// frontend/src/pages/ProfilePage.js
 
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header.js';
@@ -27,10 +27,9 @@ const ProfilePage = () => {
         
         const fetchProfile = async () => {
             try {
-                // Petición GET al nuevo endpoint /profile
                 const response = await fetch(API_PROFILE_URL, {
                     method: 'GET',
-                    headers: auth.getAuthHeaders(), // Incluye el token
+                    headers: auth.getAuthHeaders(),
                 });
 
                 if (!response.ok) {
@@ -39,10 +38,16 @@ const ProfilePage = () => {
                 
                 const data = await response.json();
                 setProfileData(data);
+                
+                // 💥 INICIALIZACIÓN DE NUEVOS CAMPOS (y los existentes)
                 setFormData({ 
+                    nombre: data.nombre || '',
+                    apellido: data.apellido || '',
+                    telefono: data.telefono || '',
+                    ciudad: data.ciudad || '',
+                    direccion: data.direccion || '',
                     age: data.age || '',
-                    isUdecStudent: data.isUdecStudent || false,
-                    // Aquí se agregarían campos de dirección y teléfono
+                    isDuocStudent: data.isDuocStudent || false,
                 });
                 setMessage('');
             } catch (error) {
@@ -68,13 +73,13 @@ const ProfilePage = () => {
         setMessage('Guardando cambios...');
         setIsError(false);
 
+        // Asegurarse de que la edad se envía como número
         const payload = { ...formData, age: parseInt(formData.age, 10) };
 
         try {
-            // Petición PUT al nuevo endpoint /profile
             const response = await fetch(API_PROFILE_URL, {
                 method: 'PUT',
-                headers: auth.getAuthHeaders(), // Incluye el token
+                headers: auth.getAuthHeaders(),
                 body: JSON.stringify(payload),
             });
 
@@ -82,7 +87,7 @@ const ProfilePage = () => {
 
             if (response.ok) {
                 setMessage('Perfil actualizado correctamente.');
-                // Actualizar el contexto para reflejar el cambio en el Header
+                // 💥 Actualizar el contexto con los nuevos datos
                 auth.login(data.user, auth.token); 
                 setProfileData(data.user);
                 setIsError(false);
@@ -108,7 +113,7 @@ const ProfilePage = () => {
                 padding: '40px 0', minHeight: 'calc(100vh - 120px)' 
             }}>
                 <main style={{ 
-                    maxWidth: '600px', 
+                    maxWidth: '700px', // Aumentamos el tamaño para los campos
                     width: '100%',
                     padding: '30px', 
                     backgroundColor: '#FFFFFF', 
@@ -116,52 +121,61 @@ const ProfilePage = () => {
                     boxShadow: '0 8px 16px rgba(0,0,0,0.1)' 
                 }}>
                     <h1 style={{ color: 'var(--color-acento-principal)', borderBottom: '2px solid var(--color-acento-secundario)', paddingBottom: '10px' }}>
-                        Gestión de Perfil (RF-3)
+                        Gestión de Perfil
                     </h1>
                     
-                    <p>
-                        **Email:** {profileData?.email} | **Rol:** {profileData?.rol}
+                    <p style={{ marginBottom: '30px' }}>
+                        **Email:** {profileData?.email} | **Rol:** {profileData?.rol || 'Cliente'}
                     </p>
                     
-                    <h2 style={{ marginTop: '30px' }}>Beneficios y Descuentos</h2>
-                    {profileData?.descuentos?.length > 0 ? (
-                        <ul>
-                            {profileData.descuentos.map((d, index) => (
-                                <li key={index}>**{d.valor}** ({d.tipo}): {d.descripcion}</li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>Actualmente no tienes descuentos activos.</p>
-                    )}
-
-                    <h2 style={{ marginTop: '30px' }}>Actualizar Datos de Entrega y Promociones</h2>
+                    <h2 style={{ marginTop: '30px' }}>Datos Personales y de Contacto</h2>
                     <form onSubmit={handleSubmit}>
                         
-                        {/* Campo Edad (Crucial para el descuento RF-3) */}
+                        {/* Fila Nombre y Apellido */}
+                        <div style={{ display: 'flex', gap: '20px', marginBottom: '15px' }}>
+                            <div style={{ flex: 1 }}>
+                                <label htmlFor="nombre" style={{ display: 'block', marginBottom: '5px' }}>Nombre:</label>
+                                <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }} />
+                            </div>
+                            <div style={{ flex: 1 }}>
+                                <label htmlFor="apellido" style={{ display: 'block', marginBottom: '5px' }}>Apellido:</label>
+                                <input type="text" name="apellido" value={formData.apellido} onChange={handleChange} required style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }} />
+                            </div>
+                        </div>
+
+                        {/* Campo Teléfono */}
+                        <div style={{ marginBottom: '15px' }}>
+                            <label htmlFor="telefono" style={{ display: 'block', marginBottom: '5px' }}>Teléfono de Contacto:</label>
+                            <input type="tel" name="telefono" value={formData.telefono} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }} placeholder="Ej: +56912345678" />
+                        </div>
+                        
+                        <h2 style={{ marginTop: '30px' }}>Datos de Entrega</h2>
+
+                        {/* Fila Ciudad y Dirección */}
+                        <div style={{ display: 'flex', gap: '20px', marginBottom: '15px' }}>
+                            <div style={{ flex: 1 }}>
+                                <label htmlFor="ciudad" style={{ display: 'block', marginBottom: '5px' }}>Ciudad:</label>
+                                <input type="text" name="ciudad" value={formData.ciudad} onChange={handleChange} required style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }} />
+                            </div>
+                            <div style={{ flex: 2 }}>
+                                <label htmlFor="direccion" style={{ display: 'block', marginBottom: '5px' }}>Dirección de Entrega:</label>
+                                <input type="text" name="direccion" value={formData.direccion} onChange={handleChange} required style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }} />
+                            </div>
+                        </div>
+
+                        <h2 style={{ marginTop: '30px' }}>Descuentos y Promociones</h2>
+                        
+                        {/* Campo Edad (Crucial para el descuento) */}
                         <div style={{ marginBottom: '15px' }}>
                             <label htmlFor="age" style={{ display: 'block', marginBottom: '5px' }}>Edad:</label>
-                            <input 
-                                type="number" 
-                                name="age" 
-                                value={formData.age} 
-                                onChange={handleChange} 
-                                required 
-                                min="10"
-                                style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }} 
-                            />
+                            <input type="number" name="age" value={formData.age} onChange={handleChange} required min="10" style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }} />
                         </div>
 
                         {/* Checkbox Duoc (Para la promoción de tortas gratis) */}
                         <div style={{ marginBottom: '20px' }}>
                             <label>
-                                <input 
-                                    type="checkbox" 
-                                    name="isUdecStudent" 
-                                    checked={formData.isUdecStudent} 
-                                    onChange={handleChange} 
-                                    style={{ marginRight: '10px' }}
-                                />
-                                Soy estudiante de UdeC (para promoción de torta gratis en cumpleaños).
+                                <input type="checkbox" name="isDuocStudent" checked={formData.isDuocStudent} onChange={handleChange} style={{ marginRight: '10px' }} />
+                                Soy estudiante de **DuocUC** (para promoción de torta gratis en cumpleaños).
                             </label>
                         </div>
                         
@@ -170,6 +184,20 @@ const ProfilePage = () => {
                         </Button>
                     </form>
 
+                    {/* Beneficios y Descuentos (Se mueve al final para no interrumpir el formulario) */}
+                    <div style={{ marginTop: '30px', borderTop: '1px solid #E0D3C5', paddingTop: '20px' }}>
+                        <h3 style={{ marginBottom: '10px' }}>Beneficios y Descuentos Activos</h3>
+                        {profileData?.descuentos?.length > 0 ? (
+                            <ul>
+                                {profileData.descuentos.map((d, index) => (
+                                    <li key={index}>**{d.valor}** ({d.tipo}): {d.descripcion}</li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p>Actualmente no tienes descuentos activos.</p>
+                        )}
+                    </div>
+                    
                     {/* Mensajes de feedback */}
                     {message && (
                         <p style={{ marginTop: '20px', padding: '10px', border: `1px solid ${isError ? '#B22222' : 'green'}`, color: isError ? '#B22222' : 'green', backgroundColor: isError ? '#FFCCCC' : '#CCFFCC' }}>
